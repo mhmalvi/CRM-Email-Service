@@ -7,7 +7,7 @@ const service = require('../services/emails_v1.service');
 
 module.exports = router ;
 
-router.route('/signup')
+router.route('/registration')
 	.post(async (req,res,next)=>{
 		
 		service.signupConfirmationMail({

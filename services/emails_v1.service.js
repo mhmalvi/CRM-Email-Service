@@ -18,7 +18,7 @@ const hbsConfigs = {
 AWS.config.update({
     accessKeyId: 'AKIAZ2QPYKS2BH5HDVOB',
     secretAccessKey: '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',
-    region: 'us-east-1'
+    region: 'ap-southeast-2'
 });
 
 

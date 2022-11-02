@@ -5,8 +5,9 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const path = require('path');
-
-const PORT = 9000;
+const dotenv = require('dotenv');
+dotenv.config();
+const port =  process.env.PORT;
 
 
 Emails.use(bodyParser.json());
@@ -21,8 +22,8 @@ Emails.use(bodyParser.urlencoded({ extended: true }));
 Emails.use('/emails/v1/api/',require('./routes/v1'));
 //Emails.use('/admin/emails/v1/',require('./routes/admin_v1'));
 //Emails.enable('view cache');
-Emails.listen(PORT,()=>{
-	console.log("server start at "+PORT);
+Emails.listen(port,()=>{
+	console.log("server start at "+port);
 });
 
 Emails.all('*',(req,res,next)=>{

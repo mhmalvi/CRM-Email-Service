@@ -12,7 +12,6 @@ router.route('/signup')
 		
 		service.signupConfirmationMail({
 			email:req.body.email,
-			verificationCode:req.body.verificationCode,
 			username:req.body.username?req.body.username:null,
 			password:req.body.password?req.body.password:null,
 			subject:"Confirm Your Email At CRM"

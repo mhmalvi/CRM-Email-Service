@@ -18,7 +18,7 @@ router.route('/signup')
 			subject:"Confirm Your Email At CRM"
 		})
 		.then((info)=>{
-			console.log(req);
+			console.log('INFO ',info);
 			// insert into mysql
 			return res.sendStatus(201);
 		})

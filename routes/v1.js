@@ -9,7 +9,7 @@ module.exports = router ;
 
 router.route('/signup')
 	.post(async (req,res,next)=>{
-		console.log(req);
+		
 		service.signupConfirmationMail({
 			email:req.body.email,
 			verificationCode:req.body.verificationCode,
@@ -18,6 +18,7 @@ router.route('/signup')
 			subject:"Confirm Your Email At CRM"
 		})
 		.then((info)=>{
+			console.log(req);
 			// insert into mysql
 			return res.sendStatus(201);
 		})

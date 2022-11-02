@@ -84,7 +84,7 @@ service.signupConfirmationMail = async function(options = {}){
 	let opt = options || {} ;
 	return this.getTransporter('signup')
 	    .then(async (transporter)=>{
-			console.log(opt);
+			console.log('OPT==> ',opt);
 			return await transporter.sendMail({
 					from:'"CRM " <souravsengpt@gmail.com>',
 					to:opt.email,

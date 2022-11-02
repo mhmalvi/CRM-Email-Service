@@ -1,0 +1,23 @@
+{
+  "name": "nodejs-email-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1243.0",
+    "body-parser": "^1.20.1",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.2",
+    "helmet": "^6.0.0",
+    "nodemailer": "^6.8.0",
+    "nodemailer-express-handlebars": "^5.0.0",
+    "nodemon": "^2.0.20",
+    "path": "^0.12.7",
+    "yarn": "^1.22.19"
+  }
+}

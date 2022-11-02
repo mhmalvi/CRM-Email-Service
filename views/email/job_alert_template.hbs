@@ -1,0 +1,15 @@
+
+		{{#each data}}
+			{{#with this}}
+				{{#if this.showMore}}
+					<a href={{this.showMore}} target="_blank"><button style="background-color:blue;color:#fff;border-radius:50%;cursor:pointer;"> Search More </button></a>
+				{{else}}
+					<a href="{{this.detailUrl}}" target="_blank">
+						<h3> {{ this.jobTitle }}</h3>
+						<h3> {{ this.companyName }} &nbsp;<small style="color:#c1c1c1"> {{ this.location}}</small><h3>
+						<p>{{this.skills}} </p>
+						<span> {{this.minSalary}} to {{this.maxSalary}}</span>
+					</a>
+                {{/if}}					
+			{{/with}}
+		{{/each}}

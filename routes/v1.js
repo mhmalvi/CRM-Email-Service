@@ -26,9 +26,12 @@ router.route('/registration')
 
 router.route('/forget-password')
       .post(async (req, res, next)=>{
+		const parseData = JSON.parse(req.body.data);
+
+		console.log('Verification Data', parseData.email);
 		  service.forgetPasswordMail({
-			  email:req.body.email,
-			  resetCode:req.body.resetCode,
+			  email:parseData.email,
+			  resetCode:parseData.verification_code,
 			  subject:"Your Password Recovery Code"
 		  })
 		  .then((info)=>{

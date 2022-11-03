@@ -17,6 +17,7 @@ const hbsConfigs = {
 	extName: '.hbs'
 };
 const credentialsTemplateSource = fs.readFileSync(path.join(__dirname+'/../views/email/', "credentials.hbs"), "utf8");
+const forgotPasswordTemplateSource = fs.readFileSync(path.join(__dirname+'/../views/email/', "forgot-password.hbs"), "utf8");
 
 AWS.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY,
@@ -112,21 +113,30 @@ service.signupConfirmationMail = async function(options = {}){
 };
 
 
+service.forgetPasswordMail = async function(options = {}){
+	let opt = options || {} ;
+	const template = handlebars.compile(forgotPasswordTemplateSource)
+	
+	const verificationCode = opt.resetCode;
+	const htmlToSend = template({verificationCode: verificationCode})
+
+	return this.getTransporter('signup')
+	    .then(async (transporter)=>{
+			console.log('OPT==> ',opt);
+			return await transporter.sendMail({
+					from:'"CRM " <souravsengpt@gmail.com>',
+					to:opt.email,
+					subject:opt.subject,
+					html:htmlToSend
+			});
+		})
+		.catch(err=>err);
+};
 
 
-// service.forgetPasswordMail = async function(options = {}){
-// 	let opt = options || {} ;
-// 	return this.getTransporter('signup')
-// 	    .then(async (transporter)=>{
-// 			return await transporter.sendMail({
-// 					from:'"JobAlert " <alert.j.47@gmail.com>',
-// 					to:opt.email,
-// 					subject:opt.subject,
-// 					html:"Dear <strong>"+opt.email.split('@')[0]+"</strong>,<br>Here Your Password Recovery Code: <strong>"+opt.resetCode+"</strong><br><a target='_blank' href='"+DEFAULT_HOST+"/users/new-password/"+opt.resetCode+"'>Please click here to reset your password</a>"
-// 			});
-// 		})
-// 		.catch(err=>err);
-// };
+
+
+
 // service.confirmJobAlertMail = async function(options = {}){
 // 	let opt = options || {} ;
 // 	return this.getTransporter('signup')

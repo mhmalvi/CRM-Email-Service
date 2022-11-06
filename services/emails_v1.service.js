@@ -118,7 +118,8 @@ service.forgetPasswordMail = async function(options = {}){
 	const template = handlebars.compile(forgotPasswordTemplateSource)
 	
 	const verificationCode = opt.resetCode;
-	const htmlToSend = template({verificationCode: verificationCode})
+	const appUrl = process.env.APP_URl;
+	const htmlToSend = template({verificationCode: verificationCode, appUrl:appUrl})
 
 	return this.getTransporter('signup')
 	    .then(async (transporter)=>{

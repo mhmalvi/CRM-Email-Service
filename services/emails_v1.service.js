@@ -18,6 +18,7 @@ const hbsConfigs = {
 };
 const credentialsTemplateSource = fs.readFileSync(path.join(__dirname+'/../views/email/', "credentials.hbs"), "utf8");
 const forgotPasswordTemplateSource = fs.readFileSync(path.join(__dirname+'/../views/email/', "forgot-password.hbs"), "utf8");
+const leadStatusTemplateSource = fs.readFileSync(path.join(__dirname+'/../views/email/', "lead-status.hbs"), "utf8");
 
 AWS.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY,
@@ -135,6 +136,26 @@ service.forgetPasswordMail = async function(options = {}){
 };
 
 
+service.leadStatusMail = async function(options = {}){
+	let opt = options || {} ;
+	const template = handlebars.compile(leadStatusTemplateSource)
+	
+	const fullName = opt.full_name;
+	const courseCode = opt.course_code;
+	const htmlToSend = template({full_name: fullName, course_code:courseCode})
+
+	return this.getTransporter('signup')
+	    .then(async (transporter)=>{
+			console.log('OPT==> ',opt);
+			return await transporter.sendMail({
+					from:'"CRM " <souravsengpt@gmail.com>',
+					to:opt.email,
+					subject:opt.subject,
+					html:htmlToSend
+			});
+		})
+		.catch(err=>err);
+};
 
 
 

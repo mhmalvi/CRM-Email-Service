@@ -42,11 +42,35 @@ router.route('/forget-password')
 		  .catch((err)=>err);
 	  });
 
-	  router.route('/student/payment')
+
+router.route('/lead-status')
+      .post(async (req, res, next)=>{
+		const parseData = JSON.parse(req.body.data);
+		console.log('Lead Details', parseData);
+		console.log('Lead Status', parseData.full_name);
+		return res.sendStatus(201);
+		
+		//   service.leadStatusMail({
+		// 	  full_name:parseData.full_name,
+		// 	  course_code:parseData.course_code,
+		// 	  subject:"Your Lead Status Changed"
+		//   })
+		//   .then((info)=>{
+		// 	  // insert into mysql
+		// 	  console.log("Info: ",info);
+		// 	  return res.sendStatus(201);
+		//   })
+		//   .catch((err)=>err);
+	  });
+
+
+router.route('/student/payment')
       .post(async (req, res, next)=>{
 		const parseData = JSON.parse(req.body.data);
 
 		console.log(' Data', parseData);
+		return res.sendStatus(201);
+		
 		//   service.forgetPasswordMail({
 		// 	  email:parseData.email,
 		// 	  resetCode:parseData.verification_code,

@@ -45,8 +45,8 @@ router.route('/forget-password')
 
 router.route('/lead-status')
       .post(async (req, res, next)=>{
-		const parseData = JSON.parse(req.body.data);
-		console.log('Lead Details', parseData);
+		//const parseData = JSON.parse(req.body.data);
+		//console.log('Lead Details', parseData);
 		//console.log('Lead Status', parseData.full_name);
 		return res.sendStatus(201);
 		
@@ -66,9 +66,9 @@ router.route('/lead-status')
 
 router.route('/student/payment')
       .post(async (req, res, next)=>{
-		const parseData = JSON.parse(req.body.data);
+		//const parseData = JSON.parse(req.body.data);
 
-		console.log(' Data', parseData);
+		//console.log(' Data', parseData);
 		return res.sendStatus(201);
 		
 		//   service.forgetPasswordMail({

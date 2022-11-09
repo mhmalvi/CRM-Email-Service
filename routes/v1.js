@@ -45,9 +45,9 @@ router.route('/forget-password')
 
 router.route('/lead-status')
       .post(async (req, res, next)=>{
-		const parseData = JSON.parse(req.body.data);
-		console.log('Lead Details', parseData);
-		console.log('Lead Status', parseData.full_name);
+		//const parseData = JSON.parse(req.body.data);
+		console.log('Lead Details', req);
+		//console.log('Lead Status', parseData.full_name);
 		return res.sendStatus(201);
 		
 		//   service.leadStatusMail({

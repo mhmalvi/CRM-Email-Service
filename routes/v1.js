@@ -64,24 +64,40 @@ router.route('/lead-status')
 	  });
 
 
-router.route('/student/payment')
+router.route('/payment')
       .post(async (req, res, next)=>{
-		//const parseData = JSON.parse(req.body.data);
-
+		const parseData = JSON.parse(req.body.data);
+		//console.log(' Role Id ', req.body.role_id);
 		//console.log(' Data', parseData);
-		return res.sendStatus(201);
+		//return res.sendStatus(201);
 		
-		//   service.forgetPasswordMail({
-		// 	  email:parseData.email,
-		// 	  resetCode:parseData.verification_code,
-		// 	  subject:"Your Password Recovery Code"
-		//   })
-		//   .then((info)=>{
-		// 	  // insert into mysql
-		// 	  console.log("Info: ",info);
-		// 	  return res.sendStatus(201);
-		//   })
-		//   .catch((err)=>err);
+		  service.paymentConfirmationMail({
+			  optionData:parseData		 
+		  })
+		  .then((info)=>{
+			  // insert into mysql
+			  console.log("Info: ",info);
+			  return res.sendStatus(201);
+		  })
+		  .catch((err)=>err);
+	  });
+
+	  router.route('/reminder')
+      .post(async (req, res, next)=>{
+		const parseData = JSON.parse(req.body.data);
+		//console.log(' Role Id ', req.body.role_id);
+		//console.log(' Data', parseData);
+		//return res.sendStatus(201);
+		
+		  service.reminderConfirmationMail({
+			  optionData:parseData		 
+		  })
+		  .then((info)=>{
+			  // insert into mysql
+			  console.log("Info: ",info);
+			  return res.sendStatus(201);
+		  })
+		  .catch((err)=>err);
 	  });	  
 
 // router.route('/job-apply')

@@ -19,6 +19,8 @@ const hbsConfigs = {
 const credentialsTemplateSource = fs.readFileSync(path.join(__dirname+'/../views/email/', "credentials.hbs"), "utf8");
 const forgotPasswordTemplateSource = fs.readFileSync(path.join(__dirname+'/../views/email/', "forgot-password.hbs"), "utf8");
 const leadStatusTemplateSource = fs.readFileSync(path.join(__dirname+'/../views/email/', "lead-status.hbs"), "utf8");
+const studentInvoiceTemplateSource = fs.readFileSync(path.join(__dirname+'/../views/email/', "student-invoice.hbs"), "utf8");
+const packageExpiredReminderTemplateSource = fs.readFileSync(path.join(__dirname+'/../views/email/', "expired-reminder.hbs"), "utf8");
 
 AWS.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY,
@@ -136,25 +138,109 @@ service.forgetPasswordMail = async function(options = {}){
 };
 
 
-service.leadStatusMail = async function(options = {}){
-	let opt = options || {} ;
-	const template = handlebars.compile(leadStatusTemplateSource)
+service.paymentConfirmationMail = async function(options = {}){
+	let opt = options.optionData || {} ;
 	
-	const fullName = opt.full_name;
-	const courseCode = opt.course_code;
-	const htmlToSend = template({full_name: fullName, course_code:courseCode})
+	//console.log('option data' , options.optionData.invoice_id);
+	//return options;
 
+
+	//const emails = ['email1@gmail.com', 'email2@gmail.com'];
+	const subject = 'Payment Confirmation';
+	const template = handlebars.compile(studentInvoiceTemplateSource)
+	//const template = handlebars.compile(forgotPasswordTemplateSource)
+	const role_id = opt.role_id;
+	if(role_id===3){
+		//const template = handlebars.compile(studentInvoiceTemplateSource)
+	}
+	const invoice_id = opt.invoice_id;
+	
+	const emails = [opt.payer_email, 'souravsengpt@gmail.com'];
+
+	//return opt;
+
+	const htmlToSend = template({opts: opt, file_path: process.env.FILE_SERVER})
+	console.log('htmlToSend ', htmlToSend);
+	return htmlToSend;
+	//return htmlToSend;
+	//console.log('emails ', emails);
 	return this.getTransporter('signup')
 	    .then(async (transporter)=>{
 			console.log('OPT==> ',opt);
 			return await transporter.sendMail({
 					from:'"CRM " <souravsengpt@gmail.com>',
-					to:opt.email,
-					subject:opt.subject,
+					to: emails,
+					subject:subject,
 					html:htmlToSend
 			});
 		})
 		.catch(err=>err);
+};
+
+
+service.reminderConfirmationMail = async function(options = {}){
+	let opt = options.optionData || {} ;
+	
+	//console.log('option data' , options.optionData.invoice_id);
+	//return options;
+
+
+	//const emails = ['email1@gmail.com', 'email2@gmail.com'];
+	const subject = opt.subject;
+
+	//console.log(subject);
+	//return subject;
+
+	const template = handlebars.compile(packageExpiredReminderTemplateSource)
+	//const template = handlebars.compile(forgotPasswordTemplateSource)
+	
+	
+	const emails = [opt.user_details.email, 'souravsengpt@gmail.com'];
+
+	//return opt;
+
+	const htmlToSend = template({opts: opt})
+	console.log('htmlToSend ', htmlToSend);
+	return htmlToSend;
+	//return htmlToSend;
+	//console.log('emails ', emails);
+	return this.getTransporter('signup')
+	    .then(async (transporter)=>{
+			console.log('OPT==> ',opt);
+			return await transporter.sendMail({
+					from:'"CRM " <souravsengpt@gmail.com>',
+					to: emails,
+					subject:subject,
+					html:htmlToSend
+			});
+		})
+		.catch(err=>err);
+};
+
+
+service.leadStatusMail = async function(options = {}){
+	let opt = options || {} ;
+	const template = handlebars.compile(leadStatusTemplateSource)
+	console.log('option data' , options.optionData.invoice_id);
+	return options;
+	const subject = 'Lead status';
+
+	//const fullName = opt.full_name;
+	//const courseCode = opt.course_code;
+
+	//const htmlToSend = template({full_name: fullName, course_code:courseCode})
+
+	// return this.getTransporter('signup')
+	//     .then(async (transporter)=>{
+	// 		console.log('OPT==> ',opt);
+	// 		return await transporter.sendMail({
+	// 				from:'"CRM " <souravsengpt@gmail.com>',
+	// 				to:opt.email,
+	// 				subject:opt.subject,
+	// 				html:htmlToSend
+	// 		});
+	// 	})
+	// 	.catch(err=>err);
 };
 
 

@@ -98,7 +98,25 @@ router.route('/payment')
 			  return res.sendStatus(201);
 		  })
 		  .catch((err)=>err);
-	  });	  
+	  });	
+	  
+	  router.route('/subscription-expired')
+      .post(async (req, res, next)=>{
+		const parseData = JSON.parse(req.body.data);
+		//console.log(' Role Id ', req.body.role_id);
+		//console.log(' Data', parseData);
+		//return res.sendStatus(201);
+		
+		  service.expiredConfirmationMail({
+			  optionData:parseData		 
+		  })
+		  .then((info)=>{
+			  // insert into mysql
+			  console.log("Info: ",info);
+			  return res.sendStatus(201);
+		  })
+		  .catch((err)=>err);
+	  });	
 
 // router.route('/job-apply')
 // 	.post(async (req,res,next)=>{	

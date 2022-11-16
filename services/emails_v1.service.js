@@ -21,6 +21,7 @@ const forgotPasswordTemplateSource = fs.readFileSync(path.join(__dirname+'/../vi
 const leadStatusTemplateSource = fs.readFileSync(path.join(__dirname+'/../views/email/', "lead-status.hbs"), "utf8");
 const studentInvoiceTemplateSource = fs.readFileSync(path.join(__dirname+'/../views/email/', "student-invoice.hbs"), "utf8");
 const packageExpiredReminderTemplateSource = fs.readFileSync(path.join(__dirname+'/../views/email/', "expired-reminder.hbs"), "utf8");
+const packageExpiredTemplateSource = fs.readFileSync(path.join(__dirname+'/../views/email/', "package-expired.hbs"), "utf8");
 
 AWS.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY,
@@ -178,6 +179,7 @@ service.paymentConfirmationMail = async function(options = {}){
 };
 
 
+
 service.reminderConfirmationMail = async function(options = {}){
 	let opt = options.optionData || {} ;
 	
@@ -195,14 +197,14 @@ service.reminderConfirmationMail = async function(options = {}){
 	//const template = handlebars.compile(forgotPasswordTemplateSource)
 	
 	
-	const emails = [opt.user_details.email, 'souravsengpt@gmail.com'];
+	const emails = [opt.user_details.email, 'quadquetech@gmail.com'];
 
 	//return opt;
-
-	const htmlToSend = template({opts: opt})
-	console.log('htmlToSend ', htmlToSend);
+	const appUrl = process.env.APP_URl;
+	const htmlToSend = template({opts: opt, appUrl:appUrl})
+	console.log('htmlToSend ', opt.user_details.email);
+	//return opt.company_details.name;
 	return htmlToSend;
-	//return htmlToSend;
 	//console.log('emails ', emails);
 	return this.getTransporter('signup')
 	    .then(async (transporter)=>{
@@ -217,6 +219,44 @@ service.reminderConfirmationMail = async function(options = {}){
 		.catch(err=>err);
 };
 
+service.expiredConfirmationMail = async function(options = {}){
+	let opt = options.optionData || {} ;
+	
+	//console.log('option data' , options.optionData.invoice_id);
+	//return options;
+
+
+	//const emails = ['email1@gmail.com', 'email2@gmail.com'];
+	const subject = opt.subject;
+
+	//console.log(subject);
+	//return subject;
+
+	const template = handlebars.compile(packageExpiredTemplateSource)
+	//const template = handlebars.compile(forgotPasswordTemplateSource)
+	
+	
+	const emails = [opt.user_details.email, 'quadquetech@gmail.com'];
+
+	//return opt;
+	const appUrl = process.env.APP_URl;
+	const htmlToSend = template({opts: opt, appUrl:appUrl})
+	console.log('htmlToSend ', opt.user_details.email);
+	//return opt.company_details.name;
+	return htmlToSend;
+	//console.log('emails ', emails);
+	return this.getTransporter('signup')
+	    .then(async (transporter)=>{
+			console.log('OPT==> ',opt);
+			return await transporter.sendMail({
+					from:'"CRM " <souravsengpt@gmail.com>',
+					to: emails,
+					subject:subject,
+					html:htmlToSend
+			});
+		})
+		.catch(err=>err);
+};
 
 service.leadStatusMail = async function(options = {}){
 	let opt = options || {} ;

@@ -19,6 +19,7 @@ const hbsConfigs = {
 const credentialsTemplateSource = fs.readFileSync(path.join(__dirname+'/../views/email/', "credentials.hbs"), "utf8");
 const forgotPasswordTemplateSource = fs.readFileSync(path.join(__dirname+'/../views/email/', "forgot-password.hbs"), "utf8");
 const leadStatusTemplateSource = fs.readFileSync(path.join(__dirname+'/../views/email/', "lead-status.hbs"), "utf8");
+const clientInvoiceTemplateSource = fs.readFileSync(path.join(__dirname+'/../views/email/', "client-invoice.hbs"), "utf8");
 const studentInvoiceTemplateSource = fs.readFileSync(path.join(__dirname+'/../views/email/', "student-invoice.hbs"), "utf8");
 const packageExpiredReminderTemplateSource = fs.readFileSync(path.join(__dirname+'/../views/email/', "expired-reminder.hbs"), "utf8");
 const packageExpiredTemplateSource = fs.readFileSync(path.join(__dirname+'/../views/email/', "package-expired.hbs"), "utf8");
@@ -151,8 +152,9 @@ service.paymentConfirmationMail = async function(options = {}){
 	const template = handlebars.compile(studentInvoiceTemplateSource)
 	//const template = handlebars.compile(forgotPasswordTemplateSource)
 	const role_id = opt.role_id;
-	if(role_id===3){
-		//const template = handlebars.compile(studentInvoiceTemplateSource)
+	if(role_id==3){
+		
+		const template = handlebars.compile(clientInvoiceTemplateSource)
 	}
 	const invoice_id = opt.invoice_id;
 	
@@ -196,8 +198,8 @@ service.reminderConfirmationMail = async function(options = {}){
 	const template = handlebars.compile(packageExpiredReminderTemplateSource)
 	//const template = handlebars.compile(forgotPasswordTemplateSource)
 	
-	
-	const emails = [opt.user_details.email, 'quadquetech@gmail.com'];
+	const emails = [opt.user_details.email, 'souravsengpt@gmail.com'];
+	//const emails = [opt.user_details.email, 'quadquetech@gmail.com'];
 
 	//return opt;
 	const appUrl = process.env.APP_URl;
@@ -236,7 +238,8 @@ service.expiredConfirmationMail = async function(options = {}){
 	//const template = handlebars.compile(forgotPasswordTemplateSource)
 	
 	
-	const emails = [opt.user_details.email, 'quadquetech@gmail.com'];
+	//const emails = [opt.user_details.email, 'quadquetech@gmail.com'];
+	const emails = [opt.user_details.email, 'souravsengpt@gmail.com'];
 
 	//return opt;
 	const appUrl = process.env.APP_URl;
@@ -265,22 +268,22 @@ service.leadStatusMail = async function(options = {}){
 	return options;
 	const subject = 'Lead status';
 
-	//const fullName = opt.full_name;
-	//const courseCode = opt.course_code;
+	const fullName = opt.full_name;
+	const courseCode = opt.course_code;
 
-	//const htmlToSend = template({full_name: fullName, course_code:courseCode})
-
-	// return this.getTransporter('signup')
-	//     .then(async (transporter)=>{
-	// 		console.log('OPT==> ',opt);
-	// 		return await transporter.sendMail({
-	// 				from:'"CRM " <souravsengpt@gmail.com>',
-	// 				to:opt.email,
-	// 				subject:opt.subject,
-	// 				html:htmlToSend
-	// 		});
-	// 	})
-	// 	.catch(err=>err);
+	const htmlToSend = template({full_name: fullName, course_code:courseCode})
+	//return options;
+	return this.getTransporter('signup')
+	    .then(async (transporter)=>{
+			console.log('OPT==> ',opt);
+			return await transporter.sendMail({
+					from:'"CRM " <souravsengpt@gmail.com>',
+					to:opt.email,
+					subject:opt.subject,
+					html:htmlToSend
+			});
+		})
+		.catch(err=>err);
 };
 
 

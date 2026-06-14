@@ -1,3 +1,6 @@
+<!-- repo-card -->
+![CRM-Email-Service](docs/assets/social-card.png)
+
 # CRM Email Service
 
 A transactional email microservice within the CRM ecosystem that handles templated email delivery for critical system events. Built with Handlebars templates and AWS SES, this service provides a centralized API for sending beautifully formatted emails across the entire CRM platform.
